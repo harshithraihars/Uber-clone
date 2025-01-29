@@ -4,6 +4,7 @@ const {
   userModel,
   hashPassword
 } = require("../models/user.model");
+const BlackListToken = require("../models/blackListToken.model");
 
 // if get any error next()
 const register = async (req, res, next) => {
@@ -43,11 +44,18 @@ const loginUser = async (req, res, next) => {
     return res.status(401).json({msg:"Invalid Password"})
   }
   const token=user.generateAuthToken();
-//   res.cookie("token",token)
+  res.cookie("token",token)
   return res.status(200).json({user,token})
 };
 
 const getUserProfile = async (req, res, next) => {
     return res.status(200).json(req.user);
 }
-module.exports = { register, loginUser,getUserProfile };
+
+const logout=async (req,res,next)=>{
+    const token=req.headers.authorization?.split(" ")[1] || req.cookies.token
+    // add the token to the blacklist
+    await BlackListToken.create({token})
+    return res.status(200).json({msg:"Logged out successfully"})
+}
+module.exports = { register, loginUser,getUserProfile,logout };

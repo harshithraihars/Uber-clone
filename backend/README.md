@@ -84,3 +84,25 @@ Requires JWT token in either:
   "lastName": "Doe", 
   "email": "john@example.com"
 }
+
+# Protected Routes
+
+## Authentication Required
+All protected routes require authentication via:
+- Bearer Token: `Authorization: Bearer <token>`
+- Cookie: `token=<token>`
+
+## User Profile
+`GET /user/profile`
+
+### Description
+Get authenticated user's profile information.
+
+### Success Response (200 OK)
+```json
+{
+  "_id": "60d0fe4f5311236168a109ca",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com"
+}
