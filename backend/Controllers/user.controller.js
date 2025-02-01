@@ -58,6 +58,8 @@ const getUserProfile = async (req, res, next) => {
 
 const logout=async (req,res,next)=>{
     const token=req.headers.authorization?.split(" ")[1] || req.cookies.token
+    console.log(token);
+    
     // add the token to the blacklist
     await BlackListToken.create({token})
     return res.status(200).json({msg:"Logged out successfully"})

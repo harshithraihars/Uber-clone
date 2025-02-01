@@ -1,28 +1,42 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import UserContext, { UserDataContext } from "../context/userContext";
 const USerSignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
-  const [firstName,setFirstName]=useState("")
-  const [lastName,setlastName]=useState("")
-  const [userData, setUserData] = useState({});
-  const handleSubmit = (e) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const navigate = useNavigate();
+  const {user,setUser}=useContext(UserDataContext);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUserData({
-      userName:{
-        firstName:firstName,
-        lastName:lastName
-      },
+    const newUser = {
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       password: password,
-    });
-    console.log(firstName,lastName,email,password);
-    
-    setEmail("")
-    setpassword("")
-    setFirstName("")
-    setlastName("")
+    };
+    let response;
+   try{
+    response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/user/register`,
+      newUser
+    );
+   }catch(err){
+    console.log(err.message);
+   }
+    if (response.status === 201) {
+      const data = response.data;
+      setUser(data.user);      
+      localStorage.setItem("token", data.token);
+    }
+    setEmail("");
+    setpassword("");
+    setFirstName("");
+    setlastName("");
+
+    navigate("/home");
   };
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
@@ -42,7 +56,6 @@ const USerSignUp = () => {
             <input
               type="text"
               className="bg-[#eeeeee] rounded px-4 py-2  border text-lg placeholder:text-base"
-              required
               placeholder="Last name"
               value={lastName}
               onChange={(e) => setlastName(e.target.value)}
@@ -70,7 +83,7 @@ const USerSignUp = () => {
             className="bg-[#111]  text-white font-semibold rounded px-4 py-2 mb-3 w-full text-lg placeholder:text-base cursor-pointer"
             type="submit"
           >
-            Login
+            Create account
           </button>
           <p className="text-center">
             ALready have an Account?{" "}
@@ -82,9 +95,10 @@ const USerSignUp = () => {
       </div>
       <div>
         <p className="text-[14px] leading-tight">
-          By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
-          including by automated means, from Uber and its affiliates to the
-          number provided.
+          This site is PRotected by reCPATCHA and the{" "}
+          <span className="underline"> Google Ploicy </span>
+          and
+          <span className="underline"> Terms of Services apply</span>
         </p>
       </div>
     </div>
