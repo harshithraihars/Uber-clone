@@ -3,7 +3,10 @@ const captianModel = require("../models/captian.model");
 const createCaptian = require("../service/catian.service");
 const { validationResult } = require("express-validator");
 module.exports.registerCaptian = async (req, res) => {
+  
   const errors = validationResult(req);
+  console.log(errors);
+  
   if (!errors.isEmpty()) {
     return res.status(400).json({ msg: errors.array() });
   }
