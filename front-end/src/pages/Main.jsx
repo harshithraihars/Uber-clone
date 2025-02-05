@@ -3,14 +3,21 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../Components/LocationSearchPanel";
+import VehiclePanel from "../Components/VehiclePanel";
+import ComfirmedReide from "../Components/ComfirmedReide";
+import LookingForDriver from "../Components/LookingForDriver";
 const Main = () => {
   const [pickUp, setPickUp] = useState("");
   const [destination, setDestination] = useState("");
   const [panel, setPanel] = useState(false);
-  const vehiclPanelRef=useRef(null)
+  const vehiclPanelRef = useRef(null);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
-  const [vehiclePanel, setVehiclePanel] = useState(false);
+  const [vehiclPanelOpen, setvehiclPanelOpen] = useState(false);
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false);
+  const ConfirmPanelRef = useRef(null);
+  const [vehicleFound,setVehicleFound]=useState(false)
+  const vehiclFoundRef=useRef(null)
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -34,17 +41,39 @@ const Main = () => {
       });
     }
   }, [panel]);
-  useGSAP(()=>{
-    if(vehiclePanel){
-      gsap.to(vehiclPanelRef.current,{
-        transform:"translateY(0)",
-      })
-    }else{
-      gsap.to(vehiclPanelRef.current,{
-        transform:"translateY(100%)"
-      })
+  useGSAP(() => {
+    if (vehiclPanelOpen) {
+      gsap.to(vehiclPanelRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(vehiclPanelRef.current, {
+        transform: "translateY(100%)",
+      });
     }
-  },[vehiclePanel])
+  }, [vehiclPanelOpen]);
+  useGSAP(() => {
+    if (confirmRidePanel) {
+      gsap.to(ConfirmPanelRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(ConfirmPanelRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [confirmRidePanel]);
+  useGSAP(() => {
+    if (vehicleFound) {
+      gsap.to(vehiclFoundRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(vehiclFoundRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [vehicleFound]);
   return (
     <div className="h-screen relative overflow-hidden">
       <img className="w-16 absolute" src="./logo.png" />
@@ -87,85 +116,31 @@ const Main = () => {
         </div>
         <div className="h-0 bg-white" ref={panelRef}>
           <LocationSearchPanel
-            vehiclePanel={vehiclePanel}
-            setVehiclePanel={setVehiclePanel}
+            setPanel={setPanel}
+            setvehiclPanelOpen={setvehiclPanelOpen}
           />
         </div>
       </div>
-      <div className="fixed bottom-0 z-10 px-3 translate-y-full w-full py-8 bg-white " ref={vehiclPanelRef}>
-        <h3 className="text-2xl font-semibold mb-5">Choose a Vehicle</h3>
-        <div
-          className="flex p-3 items-center justify-between w-full
-        border-2 bg-gray-100 border-transparent active:border-black rounded-xl mb-2"
-        >
-          <img className="h-12" src="./car.png" alt="" />
-          <div className=" w-1/2">
-            <h4 className="font-medium text-base">
-              UberGo{" "}
-              <span>
-                <i class="ri-user-fill"></i>4
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">2 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable , Compact rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">
-            <span>
-              <i class="ri-money-rupee-circle-line"></i>
-            </span>
-            193.20
-          </h2>
-        </div>
-        <div
-          className="flex p-3 items-center justify-between w-full
-        border-2 bg-gray-100 border-transparent active:border-black rounded-xl mb-2"
-        >
-          <img className="h-12" src="./bike.jpg" alt="" />
-          <div className=" w-1/2">
-            <h4 className="font-medium text-base">
-              Moto{" "}
-              <span>
-                <i class="ri-user-fill"></i>1
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">3 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable , MotorCycle Rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">
-            <span>
-              <i class="ri-money-rupee-circle-line"></i>
-            </span>
-            65
-          </h2>
-        </div>
-        <div
-          className="flex p-3 items-center justify-between w-full
-        border-2 bg-gray-100 border-transparent active:border-black rounded-xl mb-2"
-        >
-          <img className="h-12" src="./auto.webp" alt="" />
-          <div className=" w-1/2 ml-2">
-            <h4 className="font-medium text-base">
-              Auto
-              <span>
-                <i class="ri-user-fill"></i>3
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">10 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable Auto rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">
-            <span>
-              <i class="ri-money-rupee-circle-line"></i>
-            </span>
-            118.86
-          </h2>
-        </div>
+      <div
+        className="fixed bottom-0 z-10 px-3 translate-y-full w-full py-10 bg-white pt-12"
+        ref={vehiclPanelRef}
+      >
+        <VehiclePanel
+          setvehiclPanelOpen={setvehiclPanelOpen}
+          setConfirmRidePanel={setConfirmRidePanel}
+        />
+      </div>
+      <div
+        className="fixed bottom-0 z-10 px-3 translate-y-full w-full py-6 bg-white pt-12"
+        ref={ConfirmPanelRef}
+      >
+        <ComfirmedReide setvehiclPanelOpen={setvehiclPanelOpen} setVehicleFound={setVehicleFound} setConfirmRidePanel={setConfirmRidePanel}/>
+      </div>
+      <div
+        className="fixed bottom-0 z-10 px-3 translate-y-full w-full py-6 bg-white pt-12"
+        ref={vehiclFoundRef}
+      >
+        <LookingForDriver setVehicleFound={setVehicleFound}/>
       </div>
     </div>
   );
