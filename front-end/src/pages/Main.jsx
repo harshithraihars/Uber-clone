@@ -6,6 +6,7 @@ import LocationSearchPanel from "../Components/LocationSearchPanel";
 import VehiclePanel from "../Components/VehiclePanel";
 import ComfirmedReide from "../Components/ComfirmedReide";
 import LookingForDriver from "../Components/LookingForDriver";
+import WaitForDriver from "../Components/WaitForDriver";
 const Main = () => {
   const [pickUp, setPickUp] = useState("");
   const [destination, setDestination] = useState("");
@@ -18,6 +19,8 @@ const Main = () => {
   const ConfirmPanelRef = useRef(null);
   const [vehicleFound,setVehicleFound]=useState(false)
   const vehiclFoundRef=useRef(null)
+  const waitingForDriverRef=useRef(null)
+  const [waitingForDriver,setWaitingForDriver]=useState(false)
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -74,6 +77,17 @@ const Main = () => {
       });
     }
   }, [vehicleFound]);
+  useGSAP(() => {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(waitingForDriverRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [waitingForDriver]);
   return (
     <div className="h-screen relative overflow-hidden">
       <img className="w-16 absolute" src="./logo.png" />
@@ -141,6 +155,12 @@ const Main = () => {
         ref={vehiclFoundRef}
       >
         <LookingForDriver setVehicleFound={setVehicleFound}/>
+      </div>
+      <div
+        className="fixed bottom-0 z-10 px-3  w-full py-6 bg-white pt-12"
+        ref={waitingForDriverRef}
+      >
+        <WaitForDriver setWaitingForDriver={setWaitingForDriver}/>
       </div>
     </div>
   );

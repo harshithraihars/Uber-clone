@@ -140,13 +140,13 @@ const CaptianSignUp = () => {
             </select>
           </div>
           <button
-            className="bg-[#111]  text-white font-semibold rounded px-4 py-2 mb-3 w-full text-lg placeholder:text-base cursor-pointer"
+            className="bg-[#111] mt-10 text-white font-semibold rounded-lg px-4 py-4 mb-3 w-full text-lg placeholder:text-base cursor-pointer"
             type="submit"
           >
             Create Captian
           </button>
-          <p className="text-center">
-            ALready have an Account?{" "}
+          <p className="text-center mt-5">
+            Already have an Account?{" "}
             <Link to="/captian-login" className="text-blue-600">
               Login here
             </Link>
@@ -155,7 +155,7 @@ const CaptianSignUp = () => {
       </div>
       <div>
         <p className="text-[14px] leading-tight">
-          This site is PRotected by reCPATCHA and the{" "}
+          This site is Protected by reCPATCHA and the{" "}
           <span className="underline"> Google Ploicy </span>
           and
           <span className="underline"> Terms of Services apply</span>
