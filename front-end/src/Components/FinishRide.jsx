@@ -1,26 +1,35 @@
-import React from "react";
+import React from 'react'
+import { Link } from 'react-router-dom';
 
-const WaitForDriver = (setWaitingForDriver) => {
+const FinishRide = () => {
+  const handleSubmit=()=>{
+    
+  }
   return (
-    <div>
+    <div className="">
       <h5
         className="p-3 text-center absolute top-0  w-[90%] text-3xl text-gray-300"
         onClick={() => {
-          setWaitingForDriver(false)
+          setridePopUpPanel(false);
         }}
       >
         <i className="ri-arrow-down-s-line"></i>
       </h5>
-      <div className="flex items-center justify-between">
-        <img className="h-20 " src="./car.png" alt="car image" />
-        <div className="text-right">
+      <h3 className="text-2xl font-semibold mb-5">
+        Confirm this ride to start
+      </h3>
+      <div className="flex items-center justify-between mt-4 p-3 bg-yellow-400 rounded-lg">
+        <div className="flex items-center justify-center gap-3">
+          <img
+            src="./photo.jpg"
+            alt=""
+            className="w-12 h-12 rounded-full object-cover"
+          />
           <h2 className="text-lg font-medium">Harshith Rai</h2>
-          <h4 className="text-xl font-semibold -mt-1 -mb-1">KL14 X 1233</h4>
-          <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
         </div>
+        <h5 className="text-lg font-semibold">2.2 KM</h5>
       </div>
       <div className="flex justify-between items-center flex-col gap-2">
-        {/* <img className="h-36 " src="./car.png" alt="car image" /> */}
         <div className="w-full mt-5">
           <div className="flex items-center gap-5 p-3 border-b-2 border-gray-300">
             <i className="text-lg ri-map-pin-user-fill"></i>
@@ -48,9 +57,29 @@ const WaitForDriver = (setWaitingForDriver) => {
             </div>
           </div>
         </div>
+        <div className="mt-6">
+          <form onSubmit={handleSubmit}>
+            <input type="text" placeholder="Enter otp" className="bg-[#eee] px-6 py-4 text-lg rounded-lg w-full mt-3 font-mono"/>
+            <Link
+              to="/captian-riding"
+              className="w-full bg-green-600 text-white font-semibold p-3 rounded-lg mt-5 flex justify-center"
+            >
+              Confirm
+            </Link>
+            <button
+              className="w-full bg-red-500 text-whitefont-semibold p-3 rounded-lg mt-4"
+              onClick={() => {
+                setConfirmRidePopuppanel(false);
+                setridePopUpPanel(false);
+              }}
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WaitForDriver;
+export default FinishRide

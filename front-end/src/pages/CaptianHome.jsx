@@ -1,11 +1,42 @@
-import React from "react";
+import React, {  useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import CaptianDetails from "../Components/CaptianDetails";
+import RidePopup from "../Components/RidePopup";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ConfirmRidePopup from "../Components/ConfirmRidePopup";
 
 const CaptianHome = () => {
+  const [ridePopUpPanel,setridePopUpPanel]=useState(true)
+  const [confirmridepopup,setConfirmRidePopuppanel]=useState(false)
+  const confirmridepopuppanelref=useRef()
+  const ridepopuppanelref=useRef()
+  useGSAP(() => {
+    if (ridePopUpPanel) {
+      gsap.to(ridepopuppanelref.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(ridepopuppanelref.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [ridePopUpPanel]);
+  useGSAP(() => {
+    if (confirmridepopup) {
+      gsap.to(confirmridepopuppanelref.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(confirmridepopuppanelref.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [confirmridepopup]);
   return (
     <div className="h-screen">
-      <div className="fixed p-3 top-0 flex items-center justify-between w-screen">
-        <img src="./logo.png" alt="" className="w-16"/>
+      <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
+        <img src="./logo.png" alt="" className="w-16" />
         <Link
           to="/home"
           className=" h-10 w-10 flex items-center justify-center rounded-full  bg-white"
@@ -13,48 +44,28 @@ const CaptianHome = () => {
           <i className="ri-logout-box-line text-lg font-medium"></i>
         </Link>
       </div>
-      <div className="h-1/2">
+      <div className="h-3/5">
         <img
           className="h-full w-full object-cover"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt=""
         />
       </div>
-      <div className="h-1/2 p-4">
-        <div className="flex items-center justify-between">
-          <img className="h-20 " src="./car.png" alt="car image" />
-          <div className="text-right">
-            <h2 className="text-lg font-medium">Harshith Rai</h2>
-            <h4 className="text-xl font-semibold -mt-1 -mb-1">KL14 X 1233</h4>
-            <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
-          </div>
-        </div>
-        <div className="flex justify-between items-center flex-col gap-2">
-          {/* <img className="h-36 " src="./car.png" alt="car image" /> */}
-          <div className="w-full mt-5">
-            <div className="flex items-center gap-5 p-3 border-b-2 border-gray-300">
-              <i className="text-lg ri-map-pin-fill"></i>
-              <div>
-                <h3 className="text-lg font-medium">562/11-A</h3>
-                <p className="text-sm text-gray-600 -mt-1">
-                  Kadri Park, Bhopal
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-5 p-3 ">
-              <i className="ri-currency-line"></i>
-              <div>
-                <h3 className="text-lg font-medium">
-                  <i class="ri-money-rupee-circle-line"></i>193.20
-                </h3>
-                <p className="text-sm text-gray-600 -mt-1">Cash cash</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button className="w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5">
-          Make a payment
-        </button>
+      <div className="h-2/5 p-6">
+        <CaptianDetails/>
+      </div>
+      <div
+      ref={ridepopuppanelref}
+        className="fixed bottom-0 z-10 px-3  w-full py-10 bg-white pt-12 translate-y-full"
+      >
+        <RidePopup setridePopUpPanel={setridePopUpPanel} setConfirmRidePopuppanel={setConfirmRidePopuppanel}/>
+        
+      </div>
+      <div
+      ref={confirmridepopuppanelref}
+        className="fixed bottom-0 z-10 px-3  w-full py-10 bg-white pt-12 translate-y-full h-screen"
+      >
+        <ConfirmRidePopup setridePopUpPanel={setridePopUpPanel} setConfirmRidePopuppanel={setConfirmRidePopuppanel}/>
+        
       </div>
     </div>
   );
